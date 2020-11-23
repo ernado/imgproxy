@@ -207,6 +207,8 @@ func (img *vipsImage) Save(imgtype imageType, quality int, stripMeta bool) ([]by
 		err = C.vips_gifsave_go(img.VipsImage, &ptr, &imgsize)
 	case imageTypeAVIF:
 		err = C.vips_avifsave_go(img.VipsImage, &ptr, &imgsize, C.int(quality))
+	case imageTypeHEIC:
+		err = C.vips_heicsave_go(img.VipsImage, &ptr, &imgsize, C.int(quality))
 	case imageTypeBMP:
 		err = C.vips_bmpsave_go(img.VipsImage, &ptr, &imgsize)
 	case imageTypeTIFF:

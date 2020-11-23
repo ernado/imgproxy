@@ -110,6 +110,8 @@ vips_type_find_save_go(int imgtype) {
 #if VIPS_SUPPORT_AVIF
   case (AVIF):
     return vips_type_find("VipsOperation", "heifsave_buffer");
+  case (HEIC):
+    return vips_type_find("VipsOperation", "heifsave_buffer");
 #endif
   case (ICO):
     return vips_type_find("VipsOperation", "pngsave_buffer");
@@ -617,6 +619,16 @@ vips_avifsave_go(VipsImage *in, void **buf, size_t *len, int quality) {
   return vips_heifsave_buffer(in, buf, len, "Q", quality, "compression", VIPS_FOREIGN_HEIF_COMPRESSION_AV1, NULL);
 #else
   vips_error("vips_avifsave_go", "Saving AVIF is not supported (libvips 8.9+ reuired)");
+  return 1;
+#endif
+}
+
+int
+vips_heicsave_go(VipsImage *in, void **buf, size_t *len, int quality) {
+#if VIPS_SUPPORT_HEIF
+  return vips_heifsave_buffer(in, buf, len, "Q", quality, "compression", VIPS_FOREIGN_HEIF_COMPRESSION_HEVC, NULL);
+#else
+  vips_error("vips_heicsave_go", "Saving HEIC is not supported (libvips 8.9+ required)");
   return 1;
 #endif
 }
